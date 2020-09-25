@@ -3,7 +3,13 @@ package app.service.field_filler;
 import app.domain.Cell;
 import app.domain.State;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
 public class ArrayFiller {
+
+    ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     /**
      * Fills a two-dimensional array af Cells according to original array each cell state
@@ -13,19 +19,14 @@ public class ArrayFiller {
     public Cell[][] reBuildField(Cell[][] cells) {
         Cell[][] result = generateField(cells[0].length, cells.length);
         for (int i = 0; i < cells.length; i++) {
-            for (int j = 0; j < cells[i].length; j++) {
-                int finalI = i;
-                int finalJ = j;
-                new Thread(() -> {
-                    cells[finalI][finalJ].setNeighbors(cells);
-                    cells[finalI][finalJ].setFutureCondition();
-                    result[finalI][finalJ].
-                            setCurrentCondition(
-                                    cells[finalI][finalJ].
-                                            getFutureCondition().
-                                            getCurrentState());
-                }).start();
+            final int lineIndex = i;
+            threadPool.execute(new LineProcessor(cells, result, lineIndex));
             }
+        try {
+            threadPool.awaitTermination(100, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed during cells field re-building");
         }
         return result;
     }
@@ -55,5 +56,10 @@ public class ArrayFiller {
             }
         }
         return false;
+    }
+    public void terminate() {
+        if (!threadPool.isShutdown()) {
+            threadPool.shutdown();
+        }
     }
 }

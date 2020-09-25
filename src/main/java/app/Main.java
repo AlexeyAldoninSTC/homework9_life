@@ -10,14 +10,17 @@ import app.service.result_saver.ResultWriter;
 
 import java.util.Arrays;
 import java.util.Properties;
+import java.util.Scanner;
 
 public class Main {
 
-    private static final String PROPERTIES_PATH = "src/main/resources/input.properties";
-
     public static void main(String[] args) throws InterruptedException {
 
-        final Properties properties = new PropertiesReader().getProperties(PROPERTIES_PATH);
+        try (Scanner scanner= new Scanner(System.in)) {
+            System.out.println(scanner.nextLine());
+        }
+
+        final Properties properties = new PropertiesReader().getProperties(args);
 
         ArrayFiller filler = new ArrayFiller();
         Cell[][] cells = filler.generateField(
@@ -45,6 +48,7 @@ public class Main {
             cells = generated;
             printCells(cells);
         }
+        filler.terminate();
         ResultWriter writer = new ResultToFileWriter(
                 properties.getProperty("outputPath"));
         writer.saveResult(cells);
@@ -61,6 +65,6 @@ public class Main {
             }
             System.out.println("");
         }
-        System.out.println("\n====================\n");
+        System.out.println("\n=======================\n");
     }
 }

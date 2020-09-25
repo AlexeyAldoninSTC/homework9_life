@@ -33,7 +33,7 @@ public class Cell implements Serializable {
      * @param field - two-dimensional array of Cells
      * @return - number of neighbour alive cells
      */
-    public int countNeighbors(Cell[][] field) {
+     int countNeighbors(Cell[][] field) {
         if (field.length == 0 || field[0].length == 0) {
             return 0;
         }
@@ -101,8 +101,8 @@ public class Cell implements Serializable {
     @Override
     public String toString() {
         switch (currentState) {
-            case DEAD: return "|_";
-            case ALIVE: return "<>";
+            case DEAD: return "__";
+            case ALIVE: return "[]";
             default: return " ";
         }
     }
