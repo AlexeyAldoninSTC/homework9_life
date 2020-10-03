@@ -2,9 +2,7 @@ package app.domain;
 
 public enum State {
     DEAD,
-    BORN,
-    ALIVE,
-    DIES;
+    ALIVE;
 
     /**
      * Defines certain Cell future condition according to its current condition
@@ -15,26 +13,12 @@ public enum State {
     public State getFutureState(int neighbors) {
         switch (this) {
             case DEAD:
-                return (neighbors == 3) ?  BORN : DEAD;
+                return (neighbors == 3) ?  ALIVE : DEAD;
             case ALIVE:
-                return (neighbors < 2 || neighbors > 3) ? DIES : ALIVE;
+                return (neighbors < 2 || neighbors > 3) ? DEAD : ALIVE;
             default:
                 return this;
         }
     }
 
-    /**
-     * Provides a new Current State depending on defined future State
-     * @return - new defined Current state
-     */
-    public State getCurrentState() {
-        switch (this) {
-            case DIES: 
-                return DEAD;
-            case BORN:
-                return ALIVE;
-            default:
-                return this;
-        }
-    }
 }

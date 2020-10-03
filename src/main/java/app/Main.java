@@ -16,10 +16,6 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
 
-        try (Scanner scanner= new Scanner(System.in)) {
-            System.out.println(scanner.nextLine());
-        }
-
         final Properties properties = new PropertiesReader().getProperties(args);
 
         ArrayFiller filler = new ArrayFiller();
@@ -42,7 +38,7 @@ public class Main {
             Thread.sleep(1000);
             Cell[][] generated = filler.reBuildField(cells);
             if (Arrays.deepEquals(generated, cells)) {
-                System.out.println("Игра окончена ввиду отсутстввя прогресса");
+                System.out.println("Игра окончена ввиду отсутствия прогресса");
                 break;
             }
             cells = generated;

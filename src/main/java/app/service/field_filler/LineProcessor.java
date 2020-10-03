@@ -22,8 +22,7 @@ public class LineProcessor implements Runnable {
             result[lineIndex][i].
                     setCurrentCondition(
                             cells[lineIndex][i].
-                                    getFutureCondition().
-                                    getCurrentState());
+                                    getFutureCondition());
         }
     }
 }
